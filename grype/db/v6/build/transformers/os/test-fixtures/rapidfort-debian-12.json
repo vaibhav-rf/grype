@@ -1,0 +1,26 @@
+[
+  {
+    "Vulnerability": {
+      "CVSS": [],
+      "Description": "openssl: AES-SIV cipher implementation contains a bug that causes it to ignore empty associated data entries",
+      "FixedIn": [
+        {
+          "Name": "openssl",
+          "NamespaceName": "rapidfort-debian:12",
+          "Version": "3.0.11-1~deb12u2",
+          "VersionFormat": "dpkg",
+          "VulnerableRange": ">= 3.0.0, < 3.0.11-1~deb12u2",
+          "Available": {
+            "Date": "2023-11-01T00:00:00Z",
+            "Kind": "advisory"
+          }
+        }
+      ],
+      "Link": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-2975",
+      "Metadata": {},
+      "Name": "CVE-2023-2975",
+      "NamespaceName": "rapidfort-debian:12",
+      "Severity": "Medium"
+    }
+  }
+]

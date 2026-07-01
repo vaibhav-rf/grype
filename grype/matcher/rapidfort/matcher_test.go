@@ -164,6 +164,12 @@ func TestRapidfortDistroVersion(t *testing.T) {
 			expectedVer: "3.15",
 		},
 		{
+			name:        "rapidfort debian keeps full version",
+			baseDistro:  *distro.New(distro.Debian, "12", ""),
+			rfDistro:    distro.RapidFortDebian,
+			expectedVer: "12",
+    },
+    {
 			name:        "rapidfort oracle uses major version only",
 			baseDistro:  *distro.New(distro.OracleLinux, "9.4", ""),
 			rfDistro:    distro.RapidFortOracle,

@@ -24,9 +24,10 @@ import (
 // rfDistroMap maps a detected base OS type to its RF-prefixed counterpart in the DB.
 // Extend this (plus getPackageType in v6 transform.go) when RF curates a new base distro.
 var rfDistroMap = map[distro.Type]distro.Type{
-	distro.Ubuntu:      distro.RapidFortUbuntu,
-	distro.Alpine:      distro.RapidFortAlpine,
-	distro.RedHat:      distro.RapidFortRedHat,
+	distro.Ubuntu: distro.RapidFortUbuntu,
+	distro.Alpine: distro.RapidFortAlpine,
+	distro.RedHat: distro.RapidFortRedHat,
+	distro.Debian: distro.RapidFortDebian,
 	distro.OracleLinux: distro.RapidFortOracle,
 }
 

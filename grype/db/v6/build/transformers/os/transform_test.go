@@ -55,11 +55,16 @@ func TestTransform(t *testing.T) {
 		ReleaseID:    "rapidfort-redhat",
 		MajorVersion: "9",
 	}
+  
+	rapidfortDebian12OS := &db.OperatingSystem{
+		Name:         "rapidfort-debian",
+		ReleaseID:    "rapidfort-debian",
+		MajorVersion: "12",
+    
 	rapidfortOracle9OS := &db.OperatingSystem{
 		Name:         "rapidfort-oracle",
 		ReleaseID:    "rapidfort-oracle",
 		MajorVersion: "9",
-	}
 
 	alpineOS := &db.OperatingSystem{
 		Name:         "alpine",
@@ -1388,6 +1393,56 @@ func TestTransform(t *testing.T) {
 			},
 		},
 		{
+			name:     "testdata/rapidfort-debian-12.json",
+			provider: "rapidfort",
+			want: []transformers.RelatedEntries{
+				{
+					VulnerabilityHandle: &db.VulnerabilityHandle{
+						Name:       "CVE-2023-2975",
+						ProviderID: "rapidfort",
+						Provider:   expectedProvider("rapidfort"),
+						Status:     "active",
+						BlobValue: &db.VulnerabilityBlob{
+							ID:          "CVE-2023-2975",
+							Description: "openssl: AES-SIV cipher implementation contains a bug that causes it to ignore empty associated data entries",
+							References: []db.Reference{
+								{URL: "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2023-2975"},
+							},
+							Severities: []db.Severity{
+								{Scheme: db.SeveritySchemeCHMLN, Value: "medium", Rank: 1},
+							},
+						},
+					},
+					Related: affectedPkgSlice(
+						db.AffectedPackageHandle{
+							OperatingSystem: rapidfortDebian12OS,
+							Package:         &db.Package{Ecosystem: "deb", Name: "openssl"},
+							BlobValue: &db.PackageBlob{
+								Ranges: []db.Range{
+									{
+										Version: db.Version{
+											Type:       "dpkg",
+											Constraint: ">= 3.0.0, < 3.0.11-1~deb12u2",
+										},
+										Fix: &db.Fix{
+											Version: "3.0.11-1~deb12u2",
+											State:   db.FixedStatus,
+											Detail: &db.FixDetail{
+												Available: &db.FixAvailability{
+													Date: timeRef(time.Date(2023, 11, 1, 0, 0, 0, 0, time.UTC)),
+													Kind: "advisory",
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					),
+				},
+			},
+		},
+		{
 			name:     "testdata/fedora-39.json",
 			provider: "fedora",
 			want: []transformers.RelatedEntries{
@@ -1783,6 +1838,15 @@ func TestGetOSInfo(t *testing.T) {
 			},
 		},
 		{
+			name:  "rapidfort debian 12 (provider-curated, 2-part namespace)",
+			group: "rapidfort-debian:12",
+			expected: osInfo{
+				name:    "rapidfort-debian",
+				id:      "rapidfort-debian",
+				version: "12",
+      },
+    },
+    {
 			name:  "rapidfort oracle 9 (provider-curated, 2-part namespace)",
 			group: "rapidfort-oracle:9",
 			expected: osInfo{

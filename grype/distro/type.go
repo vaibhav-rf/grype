@@ -41,6 +41,7 @@ const (
 	RapidFortUbuntu Type = "rapidfort-ubuntu"
 	RapidFortAlpine Type = "rapidfort-alpine"
 	RapidFortRedHat Type = "rapidfort-redhat"
+	RapidFortDebian Type = "rapidfort-debian"
 	RapidFortOracle Type = "rapidfort-oracle"
 )
 
@@ -77,6 +78,7 @@ var All = []Type{
 	RapidFortUbuntu,
 	RapidFortAlpine,
 	RapidFortRedHat,
+	RapidFortDebian,
 	RapidFortOracle,
 }
 
@@ -112,7 +114,9 @@ var IDMapping = map[string]Type{
 	"rapidfort-ubuntu": RapidFortUbuntu,
 	"rapidfort-alpine": RapidFortAlpine,
 	"rapidfort-redhat": RapidFortRedHat,
+	"rapidfort-debian": RapidFortDebian,
 	"rapidfort-oracle": RapidFortOracle,
+
 }
 
 // aliasTypes maps common aliases to their corresponding Type.
