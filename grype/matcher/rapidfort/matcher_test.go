@@ -104,34 +104,6 @@ func TestByRPMReleaseIdentifier_FallsBackToELWhenInstalledIdentifierUnknown(t *t
 	assert.Contains(t, reason, "no el release identifier")
 }
 
-func TestByRPMReleaseIdentifier_Oracle(t *testing.T) {
-	// Oracle Linux 9 package with EL-style release suffix; advisory carries the
-	// matching release identifier.
-	criteria := byRPMReleaseIdentifier(pkg.Package{
-		Name:    "curl",
-		Version: "7.76.1-23.el9_4.3.0.1",
-		Distro:  distro.New(distro.RapidFortOracle, "9", ""),
-	})
-
-	matched, reason, err := criteria.MatchesVulnerability(vulnerability.Vulnerability{
-		Advisories: []vulnerability.Advisory{
-			{ID: "release-identifier:el9"},
-		},
-	})
-	assert.NoError(t, err)
-	assert.True(t, matched)
-	assert.Empty(t, reason)
-
-	matched, reason, err = criteria.MatchesVulnerability(vulnerability.Vulnerability{
-		Advisories: []vulnerability.Advisory{
-			{ID: "release-identifier:el8"},
-		},
-	})
-	assert.NoError(t, err)
-	assert.False(t, matched)
-	assert.Equal(t, reasonReleaseIdentifierMismatch, reason)
-}
-
 func TestRapidfortDistroVersion(t *testing.T) {
 	tests := []struct {
 		name        string
@@ -162,18 +134,6 @@ func TestRapidfortDistroVersion(t *testing.T) {
 			baseDistro:  *distro.New(distro.Alpine, "3.15", ""),
 			rfDistro:    distro.RapidFortAlpine,
 			expectedVer: "3.15",
-		},
-		{
-			name:        "rapidfort oracle uses major version only",
-			baseDistro:  *distro.New(distro.OracleLinux, "9.4", ""),
-			rfDistro:    distro.RapidFortOracle,
-			expectedVer: "9",
-		},
-		{
-			name:        "rapidfort oracle keeps major only when already major",
-			baseDistro:  *distro.New(distro.OracleLinux, "8", ""),
-			rfDistro:    distro.RapidFortOracle,
-			expectedVer: "8",
 		},
 	}
 

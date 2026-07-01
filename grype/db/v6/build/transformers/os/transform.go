@@ -317,8 +317,6 @@ func getPackageType(osName string) pkg.Type {
 		return pkg.ApkPkg
 	case "rapidfort-redhat":
 		return pkg.RpmPkg
-	case "rapidfort-oracle":
-		return pkg.RpmPkg
 	}
 
 	return ""

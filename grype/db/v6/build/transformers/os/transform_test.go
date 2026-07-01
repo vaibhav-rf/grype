@@ -55,11 +55,6 @@ func TestTransform(t *testing.T) {
 		ReleaseID:    "rapidfort-redhat",
 		MajorVersion: "9",
 	}
-	rapidfortOracle9OS := &db.OperatingSystem{
-		Name:         "rapidfort-oracle",
-		ReleaseID:    "rapidfort-oracle",
-		MajorVersion: "9",
-	}
 
 	alpineOS := &db.OperatingSystem{
 		Name:         "alpine",
@@ -1206,97 +1201,6 @@ func TestTransform(t *testing.T) {
 			},
 		},
 		{
-			name:     "testdata/rapidfort-oracle-9.json",
-			provider: "rapidfort",
-			want: []transformers.RelatedEntries{
-				{
-					VulnerabilityHandle: &db.VulnerabilityHandle{
-						Name:       "CVE-2014-0139",
-						ProviderID: "rapidfort",
-						Provider:   expectedProvider("rapidfort"),
-						Status:     "active",
-						BlobValue: &db.VulnerabilityBlob{
-							ID:          "CVE-2014-0139",
-							Description: "curl wildcard certificate validation issue",
-							References: []db.Reference{
-								{URL: "https://www.cve.org/CVERecord?id=CVE-2014-0139"},
-							},
-							Severities: []db.Severity{
-								{Scheme: db.SeveritySchemeCHMLN, Value: "low", Rank: 1},
-							},
-						},
-					},
-					Related: affectedPkgSlice(
-						db.AffectedPackageHandle{
-							OperatingSystem: rapidfortOracle9OS,
-							Package:         &db.Package{Ecosystem: "rpm", Name: "curl"},
-							BlobValue: &db.PackageBlob{
-								Qualifiers: &db.PackageQualifiers{RpmModularity: strRef("")},
-								Ranges: []db.Range{
-									{
-										Version: db.Version{
-											Type:       "rpm",
-											Constraint: ">= 0",
-										},
-										Fix: &db.Fix{
-											Version: "",
-											State:   db.NotFixedStatus,
-											Detail: &db.FixDetail{
-												References: []db.Reference{
-													{
-														ID:   "release-identifier:el9",
-														URL:  "https://linux.oracle.com/errata/ELSA-TEST-EL9.html",
-														Tags: []string{db.AdvisoryReferenceTag},
-													},
-													{
-														ID:   "ELSA-TEST-EL9",
-														URL:  "https://linux.oracle.com/errata/ELSA-TEST-EL9.html",
-														Tags: []string{db.AdvisoryReferenceTag},
-													},
-												},
-											},
-										},
-									},
-								},
-							},
-						},
-						db.AffectedPackageHandle{
-							OperatingSystem: rapidfortOracle9OS,
-							Package:         &db.Package{Ecosystem: "rpm", Name: "curl"},
-							BlobValue: &db.PackageBlob{
-								Qualifiers: &db.PackageQualifiers{RpmModularity: strRef("")},
-								Ranges: []db.Range{
-									{
-										Version: db.Version{
-											Type:       "rpm",
-											Constraint: ">= 0, < 7.76.1-23.el9_4.3.0.1",
-										},
-										Fix: &db.Fix{
-											Version: "7.76.1-23.el9_4.3.0.1",
-											State:   db.FixedStatus,
-											Detail: &db.FixDetail{
-												Available: &db.FixAvailability{
-													Date: timeRef(time.Date(2024, 1, 1, 0, 0, 0, 0, time.UTC)),
-													Kind: "advisory",
-												},
-												References: []db.Reference{
-													{
-														ID:   "release-identifier:el9_4",
-														URL:  "release-identifier:el9_4",
-														Tags: []string{db.AdvisoryReferenceTag},
-													},
-												},
-											},
-										},
-									},
-								},
-							},
-						},
-					),
-				},
-			},
-		},
-		{
 			name:     "testdata/rapidfort-redhat-9.json",
 			provider: "rapidfort",
 			want: []transformers.RelatedEntries{
@@ -1779,15 +1683,6 @@ func TestGetOSInfo(t *testing.T) {
 			expected: osInfo{
 				name:    "rapidfort-redhat",
 				id:      "rapidfort-redhat",
-				version: "9",
-			},
-		},
-		{
-			name:  "rapidfort oracle 9 (provider-curated, 2-part namespace)",
-			group: "rapidfort-oracle:9",
-			expected: osInfo{
-				name:    "rapidfort-oracle",
-				id:      "rapidfort-oracle",
 				version: "9",
 			},
 		},

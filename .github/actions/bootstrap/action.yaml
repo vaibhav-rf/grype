@@ -34,16 +34,6 @@ runs:
         go-version: ${{ inputs.go-version }}
         cache-key-prefix: ${{ inputs.cache-key-prefix }}
 
-    # go-make/setup only restores .tool/ from cache; on forks (or any branch
-    # where the tool cache hasn't been seeded by a default-branch build) the
-    # restore is a no-op, leaving e.g. .tool/skopeo missing — which the
-    # integration tests need. Always run binny install here so the tools are
-    # guaranteed to be present; it's a fast no-op when the cache hit.
-    - name: Install binny-managed tools
-      if: inputs.tools == 'true'
-      shell: bash
-      run: make binny:install
-
     - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
       if: inputs.python-version != ''
       with:
